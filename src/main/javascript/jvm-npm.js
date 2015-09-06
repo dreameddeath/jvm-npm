@@ -59,8 +59,8 @@ module = (typeof module == 'undefined') ? {} :  module;
     var __FILENAME__ = module.filename;
     var body   = readFile(module.filename, module.core),
         dir    = new File(module.filename).getParent(),
-        args   = ['exports', 'module', 'require', '__filename', '__dirname'],
-        func   = new Function(args, body);
+        //use load with script name (nashorn) for easier debugging
+        func   = load({script:"function(exports, module, require, __filename, __dirname){"+body+"}",name:module.filename});
     func.apply(module,
         [module.exports, module, module.require, module.filename, dir]);
     module.loaded = true;
